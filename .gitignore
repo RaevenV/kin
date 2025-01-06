@@ -35,4 +35,11 @@ yarn-error.*
 # typescript
 *.tsbuildinfo
 
+# IDE - IntelliJ/Android Studio
+.idea/
+*.iml
+.idea/*
+
+package-lock.json
+
 app-example
