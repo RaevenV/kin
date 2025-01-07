@@ -4,7 +4,22 @@ module.exports = {
   content: ["./app/**/*.{js,jsx,ts,tsx}"],
   presets: [require("nativewind/preset")],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        pink: "#FD87C8",
+        blue: "#77AAFF",
+        lightGreen: "#79A34A",
+        darkGreen: "#2A4636",
+        cream: "#F8F1E9",
+        white: "#FAF8F4",
+        black: "#292A26",
+        darkerBlue: "#3EA0C7",
+      },
+      fontFamily: {
+        nunito: ["Nunito-Variable"],
+        rubik: ["Rubik-Variable"],
+      },
+    },
   },
   plugins: [],
 };

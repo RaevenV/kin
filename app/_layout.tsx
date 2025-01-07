@@ -16,10 +16,9 @@ const StackLayout = () => {
         },
       }}
     >
-      <Stack.Screen
-        name="index"
-        options={{ headerTitle: "Login", headerShown: true }}
-      />
+      <Stack.Screen name="index" options={{ headerShown: false }} />
+      <Stack.Screen name="register" options={{ headerShown: false }} />
+      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
     </Stack>
   );
 };
