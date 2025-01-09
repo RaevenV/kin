@@ -1,17 +1,19 @@
 import { StyleSheet } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Ionicons } from "@expo/vector-icons";
+import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { View } from "react-native";
-import home from "./home";
-import DailyQuestion from "./dailyQuestion";
+import home, { RootStackParamList } from "./home";
 import Calendar from "./calendar";
-import TopicGenerator from "./topicGenerator";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import Profile from "./profile";
+import TopicGenerator from "./topicGenerator";
+import DailyQuestion from "./dailyQuestion";
+import { createStackNavigator } from "@react-navigation/stack";
 
 interface TabIconProps {
-  icon: any;
-  focused: boolean;
+  icon: any|null;
+  focused: boolean|null;
 }
 
 const TabIcon = ({ icon, focused }: TabIconProps) => {
@@ -43,6 +45,29 @@ const TabIcon3 = ({ icon, focused }: TabIconProps) => {
   );
 };
 
+const TabIcon4 = ({ icon, focused }: TabIconProps) => {
+  return (
+    <View className="items-center flex flex-col justify-center gap-2">
+      <FontAwesome
+        color={focused ? "#77AAFF" : "#8f8989"}
+        size={24}
+        name={icon}
+      />
+    </View>
+  );
+};
+
+const EmptyTabIcon = () => <></>;
+const Stack = createStackNavigator<RootStackParamList>();
+
+const HomeStack = () => (
+  <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Screen name="Home" component={home} />
+    <Stack.Screen name="DailyQuestion" component={DailyQuestion} />
+    <Stack.Screen name="TopicGenerator" component={TopicGenerator} />
+  </Stack.Navigator>
+);
+
 
 const Tabs = createBottomTabNavigator();
 
@@ -62,31 +87,17 @@ const _layout = () => {
       }}
     >
       <Tabs.Screen
-        name="Index"
+        name="HomeTab"
+        component={HomeStack}
         options={{
-          tabBarIcon: ({ color, focused }) => (
-            <TabIcon icon={"home"} focused={focused} />
+          tabBarIcon: ({ focused }) => (
+            <Ionicons
+              name="home"
+              size={24}
+              color={focused ? "#77AAFF" : "#8f8989"}
+            />
           ),
         }}
-        component={home}
-      />
-      <Tabs.Screen
-        name="dailyQuestion"
-        options={{
-          tabBarIcon: ({ color, focused }) => (
-            <TabIcon3 icon={"cards"} focused={focused} />
-          ),
-        }}
-        component={DailyQuestion}
-      />
-      <Tabs.Screen
-        name="topicGenerator"
-        options={{
-          tabBarIcon: ({ color, focused }) => (
-            <TabIcon icon={"dice-outline"} focused={focused} />
-          ),
-        }}
-        component={TopicGenerator}
       />
 
       <Tabs.Screen
@@ -99,7 +110,15 @@ const _layout = () => {
         component={Calendar}
       />
 
-      
+      <Tabs.Screen
+        name="profile"
+        options={{
+          tabBarIcon: ({ color, focused }) => (
+            <TabIcon4 icon={"user"} focused={focused} />
+          ),
+        }}
+        component={Profile}
+      />
     </Tabs.Navigator>
   );
 };

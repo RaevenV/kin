@@ -14,6 +14,7 @@ import {
 } from "react-native";
 import React, { useState, useCallback } from "react";
 import { Link } from "expo-router";
+import { useAuth } from "@/hooks/useAuthContext";
 
 const LoginPage = () => {
   // const [email, setEmail] = useState("");
@@ -85,8 +86,15 @@ const LoginPage = () => {
   //   </ScrollView>
   // );
 
+  //CONTOH PENGGUNAAN PROVIDER & CONTEXT
+    const { test } = useAuth();
+
   return (
     <View className="flex-1 items-center justify-center">
+      
+      <Text>{test()}</Text>
+
+
       <Link href="/register" asChild>
         <Pressable>
           <Text className="text-red-500">Regis</Text>

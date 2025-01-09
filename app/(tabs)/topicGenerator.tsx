@@ -1,11 +1,20 @@
-import { View, Text } from "react-native";
+import { View, Text, ScrollView } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const TopicGenerator = () => {
   return (
-    <SafeAreaView className="px-[16px] pt-[6px] h-full bg-cream w-full flex flex-col justify-start items-start">
-      <Text>Topic Generator</Text>
+    <SafeAreaView className="flex-1 bg-cream" edges={["top", "left", "right"]}>
+      <ScrollView
+        className="flex-1 "
+        contentContainerClassName="px-[16px] pt-[18px] pb-[40px]"
+        alwaysBounceVertical={true}
+        showsVerticalScrollIndicator={false}
+        bounces={true}
+        overScrollMode="always"
+      >
+        <Text>Topic Generator</Text>
+      </ScrollView>
     </SafeAreaView>
   );
 };
