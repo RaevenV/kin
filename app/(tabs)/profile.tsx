@@ -1,8 +1,8 @@
-import { View, Text, ScrollView } from "react-native";
+import { Text, ScrollView } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const Profile = () => {
+const ProfilePage = () => {
   return (
     <SafeAreaView className="flex-1 bg-cream" edges={["top", "left", "right"]}>
       <ScrollView
@@ -13,10 +13,10 @@ const Profile = () => {
         bounces={true}
         overScrollMode="always"
       >
-        <Text>Topic Generator</Text>
+        <Text>Profile</Text>
       </ScrollView>
     </SafeAreaView>
   );
 };
 
-export default Profile;
+export default ProfilePage;
