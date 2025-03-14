@@ -2,7 +2,7 @@ import { View, Text, Pressable } from "react-native";
 import React from "react";
 import { Link } from "expo-router";
 
-const register = () => {
+const RegisterPage = () => {
   return (
     <View className="flex-1 items-center justify-center">
       <Link href="/" asChild>
@@ -14,4 +14,4 @@ const register = () => {
   );
 };
 
-export default register;
+export default RegisterPage;

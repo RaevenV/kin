@@ -2,18 +2,18 @@ import { StyleSheet } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { View } from "react-native";
-import home, { RootStackParamList } from "./home";
-import Calendar from "./calendar";
+import HomePage, { RootStackParamList } from "./home";
+import CalendarPage from "./calendar";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import Profile from "./profile";
-import TopicGenerator from "./topicGenerator";
-import DailyQuestion from "./dailyQuestion";
+import ProfilePage from "./profile";
+import TopicGeneratorPage from "./topicGenerator";
+import DailyQuestionPage from "./dailyQuestion";
 import { createStackNavigator } from "@react-navigation/stack";
 
 interface TabIconProps {
-  icon: any|null;
-  focused: boolean|null;
+  icon: any | null;
+  focused: boolean | null;
 }
 
 const TabIcon = ({ icon, focused }: TabIconProps) => {
@@ -27,11 +27,14 @@ const TabIcon = ({ icon, focused }: TabIconProps) => {
 const TabIcon2 = ({ icon, focused }: TabIconProps) => {
   return (
     <View className="items-center flex flex-col justify-center gap-2">
-      <AntDesign color={focused ? "#77AAFF" : "#8f8989"} size={24} name={icon} />
+      <AntDesign
+        color={focused ? "#77AAFF" : "#8f8989"}
+        size={24}
+        name={icon}
+      />
     </View>
   );
 };
-
 
 const TabIcon3 = ({ icon, focused }: TabIconProps) => {
   return (
@@ -62,12 +65,11 @@ const Stack = createStackNavigator<RootStackParamList>();
 
 const HomeStack = () => (
   <Stack.Navigator screenOptions={{ headerShown: false }}>
-    <Stack.Screen name="Home" component={home} />
-    <Stack.Screen name="DailyQuestion" component={DailyQuestion} />
-    <Stack.Screen name="TopicGenerator" component={TopicGenerator} />
+    <Stack.Screen name="Home" component={HomePage} />
+    <Stack.Screen name="DailyQuestion" component={DailyQuestionPage} />
+    <Stack.Screen name="TopicGenerator" component={TopicGeneratorPage} />
   </Stack.Navigator>
 );
-
 
 const Tabs = createBottomTabNavigator();
 
@@ -107,7 +109,7 @@ const _layout = () => {
             <TabIcon2 icon={"calendar"} focused={focused} />
           ),
         }}
-        component={Calendar}
+        component={CalendarPage}
       />
 
       <Tabs.Screen
@@ -117,7 +119,7 @@ const _layout = () => {
             <TabIcon4 icon={"user"} focused={focused} />
           ),
         }}
-        component={Profile}
+        component={ProfilePage}
       />
     </Tabs.Navigator>
   );

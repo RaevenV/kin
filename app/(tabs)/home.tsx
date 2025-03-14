@@ -14,7 +14,6 @@ import { Image } from "expo-image";
 import { StyleSheet } from "react-native";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { router } from "expo-router";
 import { StackNavigationProp } from "@react-navigation/stack";
 
 export type RootStackParamList = {
@@ -25,8 +24,7 @@ export type RootStackParamList = {
 
 type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList>;
 
-
-const Home = () => {
+const HomePage = () => {
   const [fontsLoaded, setFontsLoaded] = useState(false);
   const navigation = useNavigation<HomeScreenNavigationProp>();
 
@@ -37,7 +35,7 @@ const Home = () => {
   const goToTopicGenerator = () => {
     navigation.navigate("TopicGenerator");
   };
-  
+
   useEffect(() => {
     const loadFonts = async () => {
       await useCustomFonts();
@@ -154,7 +152,7 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default HomePage;
 
 const styles = StyleSheet.create({
   image: {

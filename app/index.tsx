@@ -87,12 +87,12 @@ const LoginPage = () => {
   // );
 
   //CONTOH PENGGUNAAN PROVIDER & CONTEXT
-    const { test } = useAuth();
+    // const { test } = useAuth();
 
   return (
     <View className="flex-1 items-center justify-center">
       
-      <Text>{test()}</Text>
+      {/* <Text>{test()}</Text> */}
 
 
       <Link href="/register" asChild>
