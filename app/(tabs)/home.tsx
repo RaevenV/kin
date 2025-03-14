@@ -56,7 +56,7 @@ const HomePage = () => {
     <SafeAreaView className="flex-1 bg-cream" edges={["top", "left", "right"]}>
       <ScrollView
         className="flex-1 "
-        contentContainerClassName="px-[16px] pt-[18px] pb-[40px]"
+        contentContainerClassName="px-[16px] pt-[20px] pb-[40px]"
         alwaysBounceVertical={true}
         showsVerticalScrollIndicator={false}
         bounces={true}
@@ -71,7 +71,7 @@ const HomePage = () => {
         </View>
 
         {/* credits box */}
-        <View className="flex flex-row justify-end items-start w-full mb-6">
+        <View className="flex flex-row justify-end items-start w-full mb-4">
           <View className="bg-pink rounded-full h-12 flex justify-center items-start w-32 px-6">
             <Text className="text-white font-nunito-bold font-bold text-[12px]">
               $ 44
@@ -80,7 +80,7 @@ const HomePage = () => {
         </View>
 
         {/* daily question box */}
-        <View className="mb-6 bg-white w-full h-48 rounded-[40] shadow-sm p-8 flex justify-start items-start gap-y-2">
+        <View className="mb-4 bg-white w-full h-48 rounded-[40] shadow-sm p-8 flex justify-start items-start gap-y-2">
           <Text className="text-darkerBlue text-[10px] font-nunito-bold font-bold">
             Daily Questions!
           </Text>
@@ -101,7 +101,7 @@ const HomePage = () => {
         </View>
 
         {/* streak */}
-        <View className="relative w-full h-64 shadow-sm mb-6">
+        <View className="relative w-full h-64 shadow-sm mb-4">
           {/* Shadow Wrapper */}
           <View className="bg-white w-full p-8 h-full rounded-[40] overflow-hidden">
             <Text className="text-lightGreen font-nunito-bold font-extrabold w-[40%] text-[16px] mb-2">
@@ -128,8 +128,8 @@ const HomePage = () => {
         </View>
 
         {/* feature box */}
-        <View className="flex flex-row justify-between items-center gap-x-2 h-40 w-full">
-          <View className="bg-white shadow-sm rounded-3xl w-1/2 h-full">
+        <View className="flex flex-row justify-between items-center gap-x-4 h-40 w-full">
+          <View className="bg-white shadow-sm rounded-3xl w-[48%] h-full">
             <Pressable
               onPress={goToDailyQuestion}
               className="flex flex-col justify-center items-center h-full"
@@ -138,7 +138,7 @@ const HomePage = () => {
             </Pressable>
           </View>
 
-          <View className="bg-white shadow-sm rounded-3xl w-1/2 h-full">
+          <View className="bg-white shadow-sm rounded-3xl w-[48%] h-full">
             <Pressable
               onPress={goToTopicGenerator}
               className="flex flex-col justify-center items-center h-full"

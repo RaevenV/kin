@@ -60,7 +60,6 @@ const TabIcon4 = ({ icon, focused }: TabIconProps) => {
   );
 };
 
-const EmptyTabIcon = () => <></>;
 const Stack = createStackNavigator<RootStackParamList>();
 
 const HomeStack = () => (
