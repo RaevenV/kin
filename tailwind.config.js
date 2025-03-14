@@ -14,6 +14,7 @@ module.exports = {
         white: "#FAF8F4",
         black: "#292A26",
         darkerBlue: "#3EA0C7",
+        lightGray:"#EEEEEE"
       },
       fontFamily: {
         nunito: ["Nunito-Variable"],
