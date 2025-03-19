@@ -9,7 +9,7 @@ import {
   Animated,
   TouchableOpacity,
 } from "react-native";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useAuth } from "@/hooks/useAuthContext";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Image } from "expo-image";
@@ -17,9 +17,12 @@ import DateTimePicker, {
   DateTimePickerEvent,
 } from "@react-native-community/datetimepicker";
 import { useRouter } from "expo-router";
+import * as WebBrowser from 'expo-web-browser';
+
+WebBrowser.maybeCompleteAuthSession();
 
 const RegisterPage = () => {
-  const { signUpWithEmail, loading } = useAuth();
+  const { signUpWithEmail, signInWithGoogle, loading } = useAuth();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -27,6 +30,7 @@ const RegisterPage = () => {
   const [dob, setDob] = useState("");
   const [dobDate, setDobDate] = useState(new Date());
   const [expanded, setExpanded] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
   const expandAnimation = useRef(new Animated.Value(0)).current;
   const router = useRouter();
 
@@ -40,20 +44,41 @@ const RegisterPage = () => {
 
   const handleSignUp = async () => {
     if (password !== confirmPassword) {
-      alert("Please make sure you have the same password!");
+      Alert.alert("Password Error", "Please make sure your passwords match!");
       return;
     }
     if (!name || !email || !password || !dob) {
-      alert("Please fill in all fields");
+      Alert.alert("Missing Fields", "Please fill in all fields");
       return;
     }
 
     try {
-      await signUpWithEmail(name, email, password, dob);
-      Alert.alert("Success", "Login successful!");
+      const errorMsg = await signUpWithEmail(name, email, password, dob);
+      if (errorMsg) {
+        Alert.alert("Error", errorMsg);
+        return;
+      }
+      Alert.alert("Success", "Registration successful!");
       router.push("/(tabs)/home");
     } catch (error) {
-      Alert.alert("Error", "Login failed from the backend")
+      Alert.alert("Error", "Registration failed from the backend");
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    try {
+      setGoogleLoading(true);
+      
+      const errorMsg = await signInWithGoogle();
+      if (errorMsg) {
+        Alert.alert("Error", errorMsg);
+        return;
+      }      
+    } catch (error) {
+      console.error("Google sign-in error:", error);
+      Alert.alert("Error", "Failed to sign in with Google");
+    } finally {
+      setGoogleLoading(false);
     }
   };
 
@@ -160,7 +185,7 @@ const RegisterPage = () => {
           <Pressable
             className="flex items-center justify-center w-full p-3 mt-2 rounded-lg bg-darkerBlue h-14"
             onPress={handleSignUp}
-            disabled={loading}
+            disabled={loading || googleLoading}
           >
             <Text className="font-bold text-white">Register</Text>
           </Pressable>
@@ -171,10 +196,14 @@ const RegisterPage = () => {
 
           <Pressable
             className="flex items-center justify-center w-full p-3 mb-6 rounded-lg bg-lightGray h-14"
-            // onPress={handleSignUp}
-            disabled={loading}
+            onPress={handleGoogleSignIn}
+            disabled={loading || googleLoading}
           >
-            <Text className="font-medium text-black">Sign in with google</Text>
+            {googleLoading ? (
+              <Text className="font-medium text-black">Loading...</Text>
+            ) : (
+              <Text className="font-medium text-black">Sign in with Google</Text>
+            )}
           </Pressable>
 
           <TouchableOpacity onPress={navigateToLogin} className="mb-8">

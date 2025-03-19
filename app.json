@@ -1,6 +1,12 @@
 {
   "expo": {
     "scheme": "acme",
+    "android": {
+      "package": "com.yourcompany.yourapp"
+    },
+    "ios": {
+      "bundleIdentifier": "com.yourcompany.yourapp"
+    },
     "plugins": [
       "expo-router"
     ],

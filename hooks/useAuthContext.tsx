@@ -6,10 +6,12 @@ import {
   useState,
 } from "react";
 import { Alert } from "react-native";
-import {Session, User } from "@supabase/supabase-js";
+import { Session, User } from "@supabase/supabase-js";
 import { supabase } from "@/lib/supabase";
 import { UserData } from "@/types/user";
 import { useRouter } from "expo-router";
+import { Platform } from "react-native";
+import * as WebBrowser from 'expo-web-browser';
 
 interface AuthContextType {
   signInWithEmail: (email: string, password: string) => Promise<string | null>;
@@ -19,11 +21,13 @@ interface AuthContextType {
     password: string,
     dob: string
   ) => Promise<string | null>;
+  signInWithGoogle: () => Promise<string | null>;
   signOut: () => Promise<void>;
   user: User | null;
   userData: UserData | null;
   session: Session | null;
   loading: boolean;
+  supabase: typeof supabase;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -69,14 +73,54 @@ export function AuthProvider({ children }: AuthProviderProps) {
     initializeSession();
 
     const { data: authListener } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
-        console.log("Auth state changed:", session);
+      async (event, session) => {
+        console.log("Auth state changed:", event, session);
 
         setSession(session);
         setUser(session?.user ?? null);
 
         if (session?.user) {
-          fetchUserData(session.user.id);
+          if (event === 'SIGNED_IN') {
+            console.log("User signed in, checking if profile exists");
+            
+            const { data, error } = await supabase
+              .from("users")
+              .select("*")
+              .eq("auth_uid", session.user.id)
+              .maybeSingle();
+            
+            if ((!data && !error) || error) {
+              console.log("Creating new user profile for OAuth user");
+              
+              const userEmail = session.user.email || '';
+              const userName = session.user.user_metadata?.full_name || 'User';
+              const currentDate = new Date().toISOString().split("T")[0];
+              
+              const randomPassword = Math.random().toString(36).slice(-12);
+              
+              const { error: insertError } = await supabase.from("users").insert([
+                {
+                  auth_uid: session.user.id,
+                  name: userName,
+                  email: userEmail,
+                  password: randomPassword,
+                  dob: currentDate,
+                  role: 1, 
+                  created_at: new Date().toISOString()
+                },
+              ]);
+              
+              if (insertError) {
+                console.error("Error creating user profile for OAuth user:", insertError);
+              } else {
+                console.log("Successfully created user profile for OAuth user");
+              }
+            } else {
+              console.log("User profile already exists");
+            }
+          }
+          
+          await fetchUserData(session.user.id);
         } else {
           setUserData(null);
         }
@@ -142,6 +186,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
         email,
         password,
         dob,
+        role: 1,
+        created_at: new Date().toISOString()
       },
     ]);
 
@@ -186,6 +232,55 @@ export function AuthProvider({ children }: AuthProviderProps) {
     return null; // No error
   }
 
+  async function signInWithGoogle() {
+    setLoading(true);
+    try {
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: Platform.select({
+            native: 'your-app-scheme://auth/callback',
+            default: undefined
+          }),
+          skipBrowserRedirect: Platform.OS === 'web' ? false : true,
+          queryParams: {
+            access_type: 'offline',
+            prompt: 'consent',
+          },
+        },
+      });
+  
+      if (error) {
+        console.error("Google sign-in error:", error);
+        setLoading(false);
+        return error.message;
+      }
+  
+      if (Platform.OS !== 'web') {
+        if (data?.url) {
+          const result = await WebBrowser.openAuthSessionAsync(
+            data.url,
+            'your-app-scheme://auth/callback'
+          );
+          
+          if (result.type === 'success') {
+            const url = result.url;
+            console.log("Auth successful, URL:", url);
+          } else {
+            console.log("Auth was dismissed or failed:", result.type);
+            return "Authentication was cancelled";
+          }
+        }
+      }
+  
+      setLoading(false);
+      return null;
+    } catch (err) {
+      console.error("Unexpected error during Google sign-in:", err);
+      setLoading(false);
+      return "An unexpected error occurred";
+    }
+  }
 
   async function signOut() {
     setLoading(true);
@@ -207,11 +302,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
       value={{
         signUpWithEmail,
         signInWithEmail,
+        signInWithGoogle,
         signOut,
         user,
         userData,
         session,
         loading,
+        supabase,
       }}
     >
       {children}

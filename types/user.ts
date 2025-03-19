@@ -12,7 +12,7 @@ export type UserData = {
   name: string;
   email: string;
   password: string;
-  dob: string;
+  dob: string|Date;
   role: number | null;
   created_at: string;
 };
