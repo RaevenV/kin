@@ -79,15 +79,15 @@ const RegisterPage = () => {
   return (
     <SafeAreaView
       edges={["top", "left", "right"]}
-      className="relative h-full flex flex-col justify-start items-center"
+      className="relative flex flex-col items-center justify-start h-full"
     >
       <Image
         style={styles.image}
         source={require("../assets/images/pink-green-blue.svg")}
         contentFit="contain"
       />
-      <View className="w-full flex-1">
-        <View className="h-60 pt-4 w-full flex justify-start items-center">
+      <View className="flex-1 w-full">
+        <View className="flex items-center justify-start w-full pt-4 h-60">
           <Text className="text-xl font-bold">kin</Text>
         </View>
       </View>
@@ -105,12 +105,12 @@ const RegisterPage = () => {
             paddingBottom: 40,
           }}
         >
-          <View className="w-full flex justify-start items-center mb-6 mt-4">
+          <View className="flex items-center justify-start w-full mt-4 mb-6">
             <Text className="text-xl font-bold">register</Text>
           </View>
 
           <TextInput
-            className="bg-lightGray font-nunito font-medium rounded-lg p-4 w-full h-16 mb-4"
+            className="w-full h-16 p-4 mb-4 font-medium rounded-lg bg-lightGray font-nunito"
             placeholder="name"
             autoCapitalize="none"
             value={name}
@@ -118,14 +118,14 @@ const RegisterPage = () => {
           />
 
           <TextInput
-            className="font-nunito font-medium bg-lightGray rounded-lg p-4 w-full h-16 mb-4"
+            className="w-full h-16 p-4 mb-4 font-medium rounded-lg font-nunito bg-lightGray"
             placeholder="Email"
             autoCapitalize="none"
             value={email}
             onChangeText={setEmail}
           />
 
-          <View className="bg-lightGray rounded-lg w-full h-16 flex justify-center items-center mb-4">
+          <View className="flex items-center justify-center w-full h-16 mb-4 rounded-lg bg-lightGray">
             <DateTimePicker
               value={dobDate}
               mode="date"
@@ -136,43 +136,49 @@ const RegisterPage = () => {
           </View>
 
           <TextInput
-            className="bg-lightGray rounded-lg p-4 w-full h-16 mb-4"
+            className="w-full h-16 p-4 mb-4 rounded-lg bg-lightGray"
             placeholder="Password"
             secureTextEntry
+            textContentType="none"
+            autoComplete="off"
+            importantForAutofill="no"
             value={password}
             onChangeText={setPassword}
           />
 
           <TextInput
-            className="bg-lightGray rounded-lg p-4 w-full h-16 mb-4"
+            className="w-full h-16 p-4 mb-4 rounded-lg bg-lightGray"
             placeholder="Confirm Password"
             secureTextEntry
+            textContentType="none"
+            autoComplete="off"
+            importantForAutofill="no"
             value={confirmPassword}
             onChangeText={setConfirmPassword}
           />
 
           <Pressable
-            className="bg-darkerBlue p-3 rounded-lg w-full h-14 flex justify-center items-center mt-2"
+            className="flex items-center justify-center w-full p-3 mt-2 rounded-lg bg-darkerBlue h-14"
             onPress={handleSignUp}
             disabled={loading}
           >
-            <Text className="text-white font-bold">Register</Text>
+            <Text className="font-bold text-white">Register</Text>
           </Pressable>
 
-          <View className="w-full flex justify-center items-center mt-4 mb-4">
+          <View className="flex items-center justify-center w-full mt-4 mb-4">
             <Text>or</Text>
           </View>
 
           <Pressable
-            className="bg-lightGray p-3 rounded-lg w-full h-14 flex justify-center items-center mb-6"
+            className="flex items-center justify-center w-full p-3 mb-6 rounded-lg bg-lightGray h-14"
             // onPress={handleSignUp}
             disabled={loading}
           >
-            <Text className="text-black font-medium">Sign in with google</Text>
+            <Text className="font-medium text-black">Sign in with google</Text>
           </Pressable>
 
           <TouchableOpacity onPress={navigateToLogin} className="mb-8">
-            <Text className="text-darkerBlue font-medium">
+            <Text className="font-medium text-darkerBlue">
               Already have an account? <Text className="font-bold">Login</Text>
             </Text>
           </TouchableOpacity>

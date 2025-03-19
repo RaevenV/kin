@@ -79,7 +79,7 @@ const LoginPage = () => {
   return (
     <SafeAreaView
       edges={["top", "left", "right"]}
-      className="relative h-full flex flex-col justify-start items-center gap-y-4"
+      className="relative flex flex-col items-center justify-start h-full gap-y-4"
     >
       <Image
         style={styles.image}
@@ -92,50 +92,56 @@ const LoginPage = () => {
       </View>
 
       <View className="flex justify-start items-center rounded-t-[60px] bg-white w-full flex-grow shadow-md p-8">
-        <View className=" w-full flex justify-start items-center mb-6">
+        <View className="flex items-center justify-start w-full mb-6 ">
           <Text className="text-xl font-bold">login</Text>
         </View>
 
         <TextInput
-          className="bg-lightGray font-nunito font-medium rounded-lg p-4 w-full h-16 mb-4"
+          className="w-full h-16 p-4 mb-4 font-medium rounded-lg bg-lightGray font-nunito"
           placeholder="Email"
           autoCapitalize="none"
+          textContentType="none"
+          autoComplete="off"
+          importantForAutofill="no"
           value={email}
           onChangeText={setEmail}
         />
 
         <TextInput
-          className="bg-lightGray font-nunito font-medium rounded-lg p-4 w-full h-16 mb-4"
+          className="w-full h-16 p-4 mb-4 font-medium rounded-lg bg-lightGray font-nunito"
           placeholder="Password"
           secureTextEntry
+          textContentType="none"
+          autoComplete="off"
+          importantForAutofill="no"
           value={password}
           onChangeText={setPassword}
         />
 
         <Pressable
-          className="bg-darkerBlue p-3 rounded-lg w-full h-14 flex justify-center items-center mt-8 mb-2"
+          className="flex items-center justify-center w-full p-3 mt-8 mb-2 rounded-lg bg-darkerBlue h-14"
           onPress={handleSignIn}
           disabled={loading}
         >
-          <Text className="text-white font-bold">
+          <Text className="font-bold text-white">
             {loading ? "Logging in..." : "Login"}
           </Text>
         </Pressable>
 
-        <View className="w-full flex justify-center items-center">
+        <View className="flex items-center justify-center w-full">
           <Text>or</Text>
         </View>
 
         <Pressable
-          className="bg-lightGray p-3 rounded-lg w-full h-14 flex justify-center items-center mt-2 mb-6"
+          className="flex items-center justify-center w-full p-3 mt-2 mb-6 rounded-lg bg-lightGray h-14"
           // onPress={handleSignUp}
           disabled={loading}
         >
-          <Text className="text-black font-medium">Sign in with google</Text>
+          <Text className="font-medium text-black">Sign in with google</Text>
         </Pressable>
 
         <TouchableOpacity onPress={navigateToRegister} className="mt-4">
-          <Text className="text-darkerBlue font-medium">
+          <Text className="font-medium text-darkerBlue">
             Don't have an account? <Text className="font-bold">Register</Text>
           </Text>
         </TouchableOpacity>
