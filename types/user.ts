@@ -7,7 +7,7 @@ export type Role = {
   created_at: string;
 };
 
-export type User = {
+export type UserData = {
   id: number;
   name: string;
   email: string;
@@ -17,7 +17,7 @@ export type User = {
   created_at: string;
 };
 
-export type UserWithRole = User & {
+export type UserWithRole = UserData & {
   role_name: Role;
 };
 
@@ -40,7 +40,7 @@ export type FamilyGroup = {
 
 export type FamilyGroupWithMembers = FamilyGroup & {
   family_members: FamilyMember[];
-  users: User[];
+  users: UserData[];
 };
 
 export type Tables = {
@@ -51,6 +51,6 @@ export type Tables = {
   question_responses: QuestionResponse;
   family_members: FamilyMember;
   family_groups: FamilyGroup;
-  users: User;
+  users: UserData;
   role_name: Role;
 };
