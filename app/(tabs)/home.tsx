@@ -13,8 +13,9 @@ import ProceedButton from "../components/buttons/proceedButton";
 import { Image } from "expo-image";
 import { StyleSheet } from "react-native";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
+import { useAuth } from "@/hooks/useAuthContext";
+import { useRouter } from "expo-router";
 
 export type RootStackParamList = {
   Home: undefined;
@@ -26,14 +27,26 @@ type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList>;
 
 const HomePage = () => {
   const [fontsLoaded, setFontsLoaded] = useState(false);
-  const navigation = useNavigation<HomeScreenNavigationProp>();
+  const { userData, signOut } = useAuth();;
+  const router = useRouter();
 
+  console.log("userdata in home : ", userData);
+  
   const goToDailyQuestion = () => {
-    navigation.navigate("DailyQuestion");
+    router.push("/(tabs)/dailyQuestion");
   };
 
   const goToTopicGenerator = () => {
-    navigation.navigate("TopicGenerator");
+    router.replace("/(tabs)/topicGenerator");
+  };
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      router.replace("/");
+    } catch (error) {
+      console.error("Sign out failed:", error);
+    }
   };
 
   useEffect(() => {
@@ -55,8 +68,12 @@ const HomePage = () => {
   return (
     <SafeAreaView className="flex-1 bg-cream" edges={["top", "left", "right"]}>
       <ScrollView
-        className="flex-1 "
-        contentContainerClassName="px-[16px] pt-[20px] pb-[40px]"
+        className="flex-1"
+        contentContainerStyle={{
+          paddingHorizontal: 16,
+          paddingTop: 20,
+          paddingBottom: 100, // Increased padding to ensure button is visible
+        }}
         alwaysBounceVertical={true}
         showsVerticalScrollIndicator={false}
         bounces={true}
@@ -65,7 +82,7 @@ const HomePage = () => {
         {/* Top Bar */}
         <View className="flex flex-row justify-between items-center w-full h-12 mb-2">
           <Text className="text-[20px] font-rubik-bold font-extrabold text-black">
-            Hi Raeven 👋
+            Hi {userData?.name || "namanya gakebaca"} 👋
           </Text>
           <NotificationButton />
         </View>
@@ -111,7 +128,7 @@ const HomePage = () => {
             <View className="absolute bottom-[-100px] left-0">
               <Image
                 style={styles.image}
-                source={require("../../assets/images/sad-pink.png")}
+                source={require("../../assets/images/pink-point-sad.svg")}
                 contentFit="contain"
               />
             </View>
@@ -128,7 +145,7 @@ const HomePage = () => {
         </View>
 
         {/* feature box */}
-        <View className="flex flex-row justify-between items-center gap-x-4 h-40 w-full">
+        <View className="flex flex-row justify-between items-center gap-x-4 h-40 w-full mb-8">
           <View className="bg-white shadow-sm rounded-3xl w-[48%] h-full">
             <Pressable
               onPress={goToDailyQuestion}
@@ -147,6 +164,16 @@ const HomePage = () => {
             </Pressable>
           </View>
         </View>
+
+        {/* Sign Out Button */}
+        <Pressable
+          onPress={handleSignOut}
+          style={styles.signOutButton}
+        >
+          <Text className="text-white font-nunito-bold font-bold">
+            Sign Out
+          </Text>
+        </Pressable>
       </ScrollView>
     </SafeAreaView>
   );
@@ -159,5 +186,15 @@ const styles = StyleSheet.create({
     width: 240,
     height: 220,
     resizeMode: "contain",
+  },
+  signOutButton: {
+    backgroundColor: "#ef4444", // red-500 equivalent
+    padding: 12,
+    borderRadius: 8,
+    width: "100%",
+    height: 56,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 32,
   },
 });

@@ -10,6 +10,7 @@ import ProfilePage from "./profile";
 import TopicGeneratorPage from "./topicGenerator";
 import DailyQuestionPage from "./dailyQuestion";
 import { createStackNavigator } from "@react-navigation/stack";
+import { AuthProvider } from "@/hooks/useAuthContext";
 
 interface TabIconProps {
   icon: any | null;
@@ -74,53 +75,55 @@ const Tabs = createBottomTabNavigator();
 
 const _layout = () => {
   return (
-    <Tabs.Navigator
-      screenOptions={{
-        tabBarShowLabel: false,
-        tabBarInactiveTintColor: "#8f8989",
-        tabBarActiveTintColor: "#f0e9e9",
-        tabBarStyle: {
-          backgroundColor: "#FEFEFE",
-          paddingTop: 20,
-          height: 90,
-        },
-        headerShown: false,
-      }}
-    >
-      <Tabs.Screen
-        name="HomeTab"
-        component={HomeStack}
-        options={{
-          tabBarIcon: ({ focused }) => (
-            <Ionicons
-              name="home"
-              size={24}
-              color={focused ? "#77AAFF" : "#8f8989"}
-            />
-          ),
+    <AuthProvider>
+      <Tabs.Navigator
+        screenOptions={{
+          tabBarShowLabel: false,
+          tabBarInactiveTintColor: "#8f8989",
+          tabBarActiveTintColor: "#f0e9e9",
+          tabBarStyle: {
+            backgroundColor: "#FEFEFE",
+            paddingTop: 20,
+            height: 90,
+          },
+          headerShown: false,
         }}
-      />
+      >
+        <Tabs.Screen
+          name="HomeTab"
+          component={HomeStack}
+          options={{
+            tabBarIcon: ({ focused }) => (
+              <Ionicons
+                name="home"
+                size={24}
+                color={focused ? "#77AAFF" : "#8f8989"}
+              />
+            ),
+          }}
+        />
 
-      <Tabs.Screen
-        name="calendar"
-        options={{
-          tabBarIcon: ({ color, focused }) => (
-            <TabIcon2 icon={"calendar"} focused={focused} />
-          ),
-        }}
-        component={CalendarPage}
-      />
+        <Tabs.Screen
+          name="calendar"
+          options={{
+            tabBarIcon: ({ color, focused }) => (
+              <TabIcon2 icon={"calendar"} focused={focused} />
+            ),
+          }}
+          component={CalendarPage}
+        />
 
-      <Tabs.Screen
-        name="profile"
-        options={{
-          tabBarIcon: ({ color, focused }) => (
-            <TabIcon4 icon={"user"} focused={focused} />
-          ),
-        }}
-        component={ProfilePage}
-      />
-    </Tabs.Navigator>
+        <Tabs.Screen
+          name="profile"
+          options={{
+            tabBarIcon: ({ color, focused }) => (
+              <TabIcon4 icon={"user"} focused={focused} />
+            ),
+          }}
+          component={ProfilePage}
+        />
+      </Tabs.Navigator>
+    </AuthProvider>
   );
 };
 
