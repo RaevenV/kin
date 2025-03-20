@@ -17,9 +17,7 @@ import DateTimePicker, {
   DateTimePickerEvent,
 } from "@react-native-community/datetimepicker";
 import { useRouter } from "expo-router";
-import * as WebBrowser from 'expo-web-browser';
 
-WebBrowser.maybeCompleteAuthSession();
 
 const RegisterPage = () => {
   const { signUpWithEmail, signInWithGoogle, loading } = useAuth();

@@ -1,16 +1,16 @@
 {
   "expo": {
-    "scheme": "acme",
-    "android": {
-      "package": "com.yourcompany.yourapp"
-    },
-    "ios": {
-      "bundleIdentifier": "com.yourcompany.yourapp"
-    },
+    "scheme": "kin",
     "plugins": [
       "expo-router"
     ],
     "name": "kin",
-    "slug": "kin"
+    "slug": "kin",
+    "ios": {
+      "bundleIdentifier": "com.ios.kin"
+    },
+    "android": {
+      "package": "com.android.kin"
+    }
   }
 }

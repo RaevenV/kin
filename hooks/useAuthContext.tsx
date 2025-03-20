@@ -13,6 +13,8 @@ import { useRouter } from "expo-router";
 import { Platform } from "react-native";
 import * as WebBrowser from 'expo-web-browser';
 
+WebBrowser.maybeCompleteAuthSession();
+
 interface AuthContextType {
   signInWithEmail: (email: string, password: string) => Promise<string | null>;
   signUpWithEmail: (
@@ -239,7 +241,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         provider: 'google',
         options: {
           redirectTo: Platform.select({
-            native: 'your-app-scheme://auth/callback',
+            native: 'kin://auth/callback',
             default: undefined
           }),
           skipBrowserRedirect: Platform.OS === 'web' ? false : true,
@@ -260,7 +262,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         if (data?.url) {
           const result = await WebBrowser.openAuthSessionAsync(
             data.url,
-            'your-app-scheme://auth/callback'
+            'kin://auth/callback'
           );
           
           if (result.type === 'success') {
