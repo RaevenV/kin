@@ -19,7 +19,7 @@ import DateTimePicker, {
 import { useRouter } from "expo-router";
 
 const RegisterPage = () => {
-  const { signUpWithEmail, loading } = useAuth();
+  const { signUpWithEmail, loading, userData, refreshUserData } = useAuth();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -48,13 +48,19 @@ const RegisterPage = () => {
       return;
     }
 
-    try {
-      await signUpWithEmail(name, email, password, dob);
-      Alert.alert("Success", "Login successful!");
-      router.push("/(tabs)/home");
-    } catch (error) {
-      Alert.alert("Error", "Login failed from the backend")
+    const errorMessage = await signUpWithEmail(name, email, password, dob);
+    if (errorMessage) {
+      Alert.alert("Error", errorMessage);
+      return;
     }
+
+    if (!userData) {
+      await refreshUserData();
+    }
+
+    Alert.alert("Success", "Registration successful!", [
+      { text: "OK", onPress: () => router.push("/(tabs)/home") },
+    ]);
   };
 
   const navigateToLogin = () => {
@@ -114,6 +120,8 @@ const RegisterPage = () => {
             placeholder="name"
             autoCapitalize="none"
             value={name}
+            autoCorrect={false}
+            spellCheck={false}
             onChangeText={setName}
           />
 
@@ -122,6 +130,8 @@ const RegisterPage = () => {
             placeholder="Email"
             autoCapitalize="none"
             value={email}
+            autoCorrect={false}
+            spellCheck={false}
             onChangeText={setEmail}
           />
 
@@ -140,6 +150,8 @@ const RegisterPage = () => {
             placeholder="Password"
             secureTextEntry
             value={password}
+            autoCorrect={false}
+            spellCheck={false}
             onChangeText={setPassword}
           />
 
@@ -148,6 +160,8 @@ const RegisterPage = () => {
             placeholder="Confirm Password"
             secureTextEntry
             value={confirmPassword}
+            autoCorrect={false}
+            spellCheck={false}
             onChangeText={setConfirmPassword}
           />
 
