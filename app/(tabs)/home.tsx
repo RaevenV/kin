@@ -15,6 +15,7 @@ import { StyleSheet } from "react-native";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useAuth } from "@/hooks/useAuthContext";
+import { useNavigation } from "expo-router";
 import { useRouter } from "expo-router";
 
 export type RootStackParamList = {
@@ -27,17 +28,16 @@ type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList>;
 
 const HomePage = () => {
   const [fontsLoaded, setFontsLoaded] = useState(false);
-  const { userData, signOut } = useAuth();;
+  const { userData, signOut } = useAuth();
   const router = useRouter();
+  const navigation = useNavigation<HomeScreenNavigationProp>();
 
-  console.log("userdata in home : ", userData);
-  
   const goToDailyQuestion = () => {
-    router.push("/(tabs)/dailyQuestion");
+    navigation.navigate("DailyQuestion");
   };
 
   const goToTopicGenerator = () => {
-    router.replace("/(tabs)/topicGenerator");
+    navigation.navigate("TopicGenerator");
   };
 
   const handleSignOut = async () => {
@@ -50,6 +50,7 @@ const HomePage = () => {
   };
 
   useEffect(() => {
+    console.log("userdata in home : ", userData);
     const loadFonts = async () => {
       await useCustomFonts();
       setFontsLoaded(true);
@@ -72,7 +73,7 @@ const HomePage = () => {
         contentContainerStyle={{
           paddingHorizontal: 16,
           paddingTop: 20,
-          paddingBottom: 100, // Increased padding to ensure button is visible
+          paddingBottom: 100,
         }}
         alwaysBounceVertical={true}
         showsVerticalScrollIndicator={false}

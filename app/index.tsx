@@ -20,34 +20,15 @@ const LoginPage = () => {
   const [initialCheckDone, setInitialCheckDone] = useState(false);
   const router = useRouter();
 
-  //template check sesh
   useEffect(() => {
-    if (session || userData) {
-      console.log("User already logged in, redirecting to home...");
-      router.replace("/(tabs)/home"); // Use replace to avoid adding to navigation stack
+    if (!loading) {
+      if (session || userData) {
+        console.log("User already logged in, redirecting to home...");
+        router.replace("/(tabs)/home");
+      }
+      setInitialCheckDone(true);
     }
-    setInitialCheckDone(true); // Mark initial check as complete
-  }, [session, userData, router]);
-
-  console.log("LoginPage auth state:", { session, userData, loading });
-
-  // Wait for loading to complete before rendering or redirecting
-  if (loading) {
-    return (
-      <SafeAreaView>
-        <Text>Loading...</Text>
-      </SafeAreaView>
-    );
-  }
-
-  // Optionally, render a loading state until the check is done
-  if (!initialCheckDone) {
-    return (
-      <SafeAreaView>
-        <Text>Loading...</Text>
-      </SafeAreaView>
-    );
-  }
+  }, [loading, session, userData, router]);
 
   const handleSignIn = async () => {
     if (!email || !password) {
