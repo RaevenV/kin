@@ -165,16 +165,6 @@ const HomePage = () => {
             </Pressable>
           </View>
         </View>
-
-        {/* Sign Out Button */}
-        <Pressable
-          onPress={handleSignOut}
-          style={styles.signOutButton}
-        >
-          <Text className="text-white font-nunito-bold font-bold">
-            Sign Out
-          </Text>
-        </Pressable>
       </ScrollView>
     </SafeAreaView>
   );
@@ -187,15 +177,5 @@ const styles = StyleSheet.create({
     width: 240,
     height: 220,
     resizeMode: "contain",
-  },
-  signOutButton: {
-    backgroundColor: "#ef4444", // red-500 equivalent
-    padding: 12,
-    borderRadius: 8,
-    width: "100%",
-    height: 56,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 32,
   },
 });

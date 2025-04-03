@@ -201,8 +201,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
         return "User ID not found";
       }
 
-      // State will be updated by the auth state change listener
-
       setLoading(false);
       return null; // No error
     } catch (err) {
@@ -214,7 +212,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   async function signOut() {
     setLoading(true);
-
     try {
       const { error } = await supabase.auth.signOut();
 

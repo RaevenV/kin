@@ -8,14 +8,12 @@ import {
   Alert,
   Animated,
   TouchableOpacity,
+  Modal,
 } from "react-native";
 import React, { useState, useRef } from "react";
 import { useAuth } from "@/hooks/useAuthContext";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Image } from "expo-image";
-import DateTimePicker, {
-  DateTimePickerEvent,
-} from "@react-native-community/datetimepicker";
 import { useRouter } from "expo-router";
 
 const RegisterPage = () => {
@@ -24,18 +22,44 @@ const RegisterPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [dob, setDob] = useState("");
-  const [dobDate, setDobDate] = useState(new Date());
+  const [date, setDate] = useState(new Date());
+  const [dobText, setDobText] = useState("");
+  const [showPicker, setShowPicker] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const expandAnimation = useRef(new Animated.Value(0)).current;
   const router = useRouter();
 
-  const onDateChange = (event: DateTimePickerEvent, selectedDate?: Date) => {
-    if (selectedDate) {
-      setDobDate(selectedDate);
-      const formattedDate = selectedDate.toISOString().split("T")[0];
-      setDob(formattedDate);
+  // Custom date picker state
+  const [day, setDay] = useState(date.getDate());
+  const [month, setMonth] = useState(date.getMonth() + 1);
+  const [year, setYear] = useState(date.getFullYear());
+
+  const toggleDatepicker = () => {
+    if (!showPicker) {
+      // Set current values when opening
+      setDay(date.getDate());
+      setMonth(date.getMonth() + 1);
+      setYear(date.getFullYear());
     }
+    setShowPicker(!showPicker);
+  };
+
+  const formatDate = (day: number, month: number, year: number): string => {
+    return `${day < 10 ? "0" + day : day}/${
+      month < 10 ? "0" + month : month
+    }/${year}`;
+  };
+
+  const confirmDate = () => {
+    // Validate date
+    const maxDay = new Date(year, month, 0).getDate();
+    const validDay = Math.min(Math.max(1, day), maxDay);
+
+    // Create new date and format
+    const newDate = new Date(year, month - 1, validDay);
+    setDate(newDate);
+    setDobText(formatDate(validDay, month, year));
+    toggleDatepicker();
   };
 
   const handleSignUp = async () => {
@@ -43,12 +67,17 @@ const RegisterPage = () => {
       alert("Please make sure you have the same password!");
       return;
     }
-    if (!name || !email || !password || !dob) {
+    if (!name || !email || !password || !dobText) {
       alert("Please fill in all fields");
       return;
     }
 
-    const errorMessage = await signUpWithEmail(name, email, password, dob);
+    const errorMessage = await signUpWithEmail(
+      name,
+      email,
+      password,
+      date.toISOString()
+    );
     if (errorMessage) {
       Alert.alert("Error", errorMessage);
       return;
@@ -81,6 +110,42 @@ const RegisterPage = () => {
     inputRange: [0, 1],
     outputRange: ["68%", "90%"],
   });
+
+  const currentYear = new Date().getFullYear();
+  const years = Array.from({ length: 100 }, (_, i) => currentYear - i);
+
+  const months = Array.from({ length: 12 }, (_, i) => i + 1);
+
+  const daysInMonth = new Date(year, month, 0).getDate();
+  const days = Array.from({ length: daysInMonth }, (_, i) => i + 1);
+
+  const renderPickerItems = (
+    items: number[],
+    selectedValue: number,
+    onValueChange: (value: number) => void
+  ) => {
+    return (
+      <ScrollView className="flex-1 px-2">
+        {items.map((item) => (
+          <TouchableOpacity
+            key={item}
+            className={`p-3 rounded-lg ${
+              selectedValue === item ? "bg-darkerBlue" : "bg-lightGray"
+            } my-1`}
+            onPress={() => onValueChange(item)}
+          >
+            <Text
+              className={`text-center ${
+                selectedValue === item ? "text-white font-bold" : "text-black"
+              }`}
+            >
+              {item < 10 ? `0${item}` : item}
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
+    );
+  };
 
   return (
     <SafeAreaView
@@ -116,8 +181,8 @@ const RegisterPage = () => {
           </View>
 
           <TextInput
-            className="bg-lightGray font-nunito font-medium rounded-lg p-4 w-full h-16 mb-4"
-            placeholder="name"
+            className="bg-lightGray font-nunito font-medium rounded-2xl p-4 w-full h-16 mb-4"
+            placeholder="Name"
             autoCapitalize="none"
             value={name}
             autoCorrect={false}
@@ -126,7 +191,7 @@ const RegisterPage = () => {
           />
 
           <TextInput
-            className="font-nunito font-medium bg-lightGray rounded-lg p-4 w-full h-16 mb-4"
+            className="font-nunito font-medium bg-lightGray rounded-2xl p-4 w-full h-16 mb-4"
             placeholder="Email"
             autoCapitalize="none"
             value={email}
@@ -135,18 +200,71 @@ const RegisterPage = () => {
             onChangeText={setEmail}
           />
 
-          <View className="bg-lightGray rounded-lg w-full h-16 flex justify-center items-center mb-4">
-            <DateTimePicker
-              value={dobDate}
-              mode="date"
-              display="default"
-              onChange={onDateChange}
-              maximumDate={new Date()}
-            />
-          </View>
+          <Pressable
+            onPress={toggleDatepicker}
+            className="bg-lightGray rounded-2xl w-full h-16 mb-4 justify-center"
+          >
+            <Text className="text-gray-400 font-nunito font-medium px-4">
+              {dobText || "Choose date of birth"}
+            </Text>
+          </Pressable>
+
+          {/* Custom Date Picker Modal */}
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={showPicker}
+            onRequestClose={toggleDatepicker}
+          >
+            <View className="flex-1 justify-end bg-black/50">
+              <View className="bg-white rounded-t-3xl p-5">
+                <Text className="text-center text-lg font-bold mb-4">
+                  Select Date of Birth
+                </Text>
+
+                <View className="flex-row justify-between mb-6 h-64">
+                  {/* Day picker */}
+                  <View className="flex-1">
+                    <Text className="text-center mb-2 font-medium">Day</Text>
+                    {renderPickerItems(days, day, setDay)}
+                  </View>
+
+                  {/* Month picker */}
+                  <View className="flex-1">
+                    <Text className="text-center mb-2 font-medium">Month</Text>
+                    {renderPickerItems(months, month, setMonth)}
+                  </View>
+
+                  {/* Year picker */}
+                  <View className="flex-1">
+                    <Text className="text-center mb-2 font-medium">Year</Text>
+                    {renderPickerItems(years, year, setYear)}
+                  </View>
+                </View>
+
+                <View className="flex-row justify-between">
+                  <TouchableOpacity
+                    className="bg-gray-200 p-3 rounded-xl flex-1 mr-2"
+                    onPress={toggleDatepicker}
+                  >
+                    <Text className="text-center font-medium">Cancel</Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
+                    className="bg-darkerBlue p-3 rounded-xl flex-1 ml-2"
+                    onPress={confirmDate}
+                  >
+                    <Text className="text-white text-center font-medium">
+                      Confirm
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+          </Modal>
 
           <TextInput
-            className="bg-lightGray rounded-lg p-4 w-full h-16 mb-4"
+            className="bg-lightGray font-nunito font-medium rounded-2xl p-4 w-full h-16 mb-4"
             placeholder="Password"
             secureTextEntry
             value={password}
@@ -156,7 +274,7 @@ const RegisterPage = () => {
           />
 
           <TextInput
-            className="bg-lightGray rounded-lg p-4 w-full h-16 mb-4"
+            className="bg-lightGray font-nunito font-medium rounded-2xl p-4 w-full h-16 mb-4"
             placeholder="Confirm Password"
             secureTextEntry
             value={confirmPassword}
@@ -166,7 +284,7 @@ const RegisterPage = () => {
           />
 
           <Pressable
-            className="bg-darkerBlue p-3 rounded-lg w-full h-14 flex justify-center items-center mt-2"
+            className="bg-darkerBlue p-3 rounded-xl w-full h-14 flex justify-center items-center mt-2"
             onPress={handleSignUp}
             disabled={loading}
           >
@@ -178,7 +296,7 @@ const RegisterPage = () => {
           </View>
 
           <Pressable
-            className="bg-lightGray p-3 rounded-lg w-full h-14 flex justify-center items-center mb-6"
+            className="bg-lightGray p-3 rounded-xl w-full h-14 flex justify-center items-center mb-6"
             // onPress={handleSignUp}
             disabled={loading}
           >
@@ -200,11 +318,11 @@ export default RegisterPage;
 
 const styles = StyleSheet.create({
   image: {
-    width: 300,
-    height: 220,
+    width: 220,
+    height: 250,
     resizeMode: "contain",
     position: "absolute",
-    top: 120,
+    top: 60,
   },
   formContainer: {
     width: "100%",
