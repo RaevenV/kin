@@ -11,19 +11,12 @@ import TopicGeneratorPage from "./topicGenerator";
 import DailyQuestionPage from "./dailyQuestion";
 import { createStackNavigator } from "@react-navigation/stack";
 import { AuthProvider } from "@/hooks/useAuthContext";
+import { UserDataProvider } from "@/hooks/useUserDataContext";
 
 interface TabIconProps {
   icon: any | null;
   focused: boolean | null;
 }
-
-const TabIcon = ({ icon, focused }: TabIconProps) => {
-  return (
-    <View className="items-center flex flex-col justify-center gap-2">
-      <Ionicons color={focused ? "#77AAFF" : "#8f8989"} size={24} name={icon} />
-    </View>
-  );
-};
 
 const TabIcon2 = ({ icon, focused }: TabIconProps) => {
   return (
@@ -64,11 +57,13 @@ const TabIcon4 = ({ icon, focused }: TabIconProps) => {
 const Stack = createStackNavigator<RootStackParamList>();
 
 const HomeStack = () => (
-  <Stack.Navigator screenOptions={{ headerShown: false }}>
-    <Stack.Screen name="Home" component={HomePage} />
-    <Stack.Screen name="DailyQuestion" component={DailyQuestionPage} />
-    <Stack.Screen name="TopicGenerator" component={TopicGeneratorPage} />
-  </Stack.Navigator>
+  <UserDataProvider>
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Home" component={HomePage} />
+      <Stack.Screen name="DailyQuestion" component={DailyQuestionPage} />
+      <Stack.Screen name="TopicGenerator" component={TopicGeneratorPage} />
+    </Stack.Navigator>
+  </UserDataProvider>
 );
 
 const Tabs = createBottomTabNavigator();

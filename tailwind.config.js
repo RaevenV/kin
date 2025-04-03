@@ -10,11 +10,12 @@ module.exports = {
         blue: "#77AAFF",
         lightGreen: "#79A34A",
         darkGreen: "#2A4636",
-        cream: "#F8F1E9",
-        white: "#FAF8F4",
+        cream: "#FFFAF3",
+        white: "#FEFEFE",
         black: "#292A26",
         darkerBlue: "#3EA0C7",
-        lightGray:"#EEEEEE"
+        lightGray: "#EEEEEE",
+        cyan: "#cdf1fe",
       },
       fontFamily: {
         nunito: ["Nunito-Variable"],

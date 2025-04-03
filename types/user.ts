@@ -14,6 +14,8 @@ export type UserData = {
   password: string;
   dob: string;
   role: number | null;
+  level: number;
+  xp: number;
   created_at: string;
 };
 

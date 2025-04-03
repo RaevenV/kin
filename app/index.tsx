@@ -14,7 +14,7 @@ import { Image } from "expo-image";
 import { useRouter } from "expo-router";
 
 const LoginPage = () => {
-  const { signInWithEmail, loading, userData, session, signOut } = useAuth();
+  const {signInWithEmail, loading, userData, session} = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [initialCheckDone, setInitialCheckDone] = useState(false);
@@ -45,8 +45,6 @@ const LoginPage = () => {
 
       console.log("Session after login:", session);
       console.log("UserData after login:", userData);
-
-      Alert.alert("Success", "Login successful!");
       router.push("/(tabs)/home");
     } catch (error) {
       Alert.alert("Error", "Login failed from the backend");
@@ -67,6 +65,7 @@ const LoginPage = () => {
         source={require("../assets/images/pink-blue-green.svg")}
         contentFit="contain"
       />
+      
       <View className="h-[270px] pt-4 w-full flex justify-start items-center">
         {/* logo */}
         <Text className="text-xl font-bold">kin</Text>
@@ -78,7 +77,7 @@ const LoginPage = () => {
         </View>
 
         <TextInput
-          className="bg-lightGray font-nunito font-medium rounded-lg p-4 w-full h-16 mb-4"
+          className="bg-lightGray font-nunito font-medium rounded-2xl p-4 w-full h-16 mb-4"
           placeholder="Email"
           autoCapitalize="none"
           value={email}
@@ -86,7 +85,7 @@ const LoginPage = () => {
         />
 
         <TextInput
-          className="bg-lightGray font-nunito font-medium rounded-lg p-4 w-full h-16 mb-4"
+          className="bg-lightGray font-nunito font-medium rounded-2xl p-4 w-full h-16 mb-4"
           placeholder="Password"
           secureTextEntry
           value={password}
@@ -94,7 +93,7 @@ const LoginPage = () => {
         />
 
         <Pressable
-          className="bg-darkerBlue p-3 rounded-lg w-full h-14 flex justify-center items-center mt-8 mb-2"
+          className="bg-darkerBlue p-3 rounded-xl w-full h-14 flex justify-center items-center mt-8 mb-2"
           onPress={handleSignIn}
           disabled={loading}
         >
@@ -108,7 +107,7 @@ const LoginPage = () => {
         </View>
 
         <Pressable
-          className="bg-lightGray p-3 rounded-lg w-full h-14 flex justify-center items-center mt-2 mb-6"
+          className="bg-lightGray p-3 rounded-xl w-full h-14 flex justify-center items-center mt-2 mb-6"
           // onPress={handleSignUp}
           disabled={loading}
         >
@@ -129,10 +128,10 @@ export default LoginPage;
 
 const styles = StyleSheet.create({
   image: {
-    width: 320,
+    width: 220,
     height: 250,
     resizeMode: "contain",
     position: "absolute",
-    top: 130,
+    top: 100,
   },
 });
