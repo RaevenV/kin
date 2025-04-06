@@ -39,7 +39,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [loading, setLoading] = useState(true);
   const [isInitialized, setIsInitialized] = useState(false);
 
-
   const fetchUserData = useCallback(async (userId: string) => {
     if (!userId) return;
 
@@ -173,8 +172,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
       setLoading(false);
       return null;
-    } catch (err) {
-      console.error("Unexpected error during signup:", err);
+    } catch (error) {
+      console.error("Unexpected error during signup:", error);
       setLoading(false);
       return "An unexpected error occurred";
     }

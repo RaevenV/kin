@@ -40,17 +40,7 @@ const HomePage = () => {
     navigation.navigate("TopicGenerator");
   };
 
-  const handleSignOut = async () => {
-    try {
-      await signOut();
-      router.replace("/");
-    } catch (error) {
-      console.error("Sign out failed:", error);
-    }
-  };
-
   useEffect(() => {
-    console.log("userdata in home : ", userData);
     const loadFonts = async () => {
       await useCustomFonts();
       setFontsLoaded(true);
@@ -72,8 +62,7 @@ const HomePage = () => {
         className="flex-1"
         contentContainerStyle={{
           paddingHorizontal: 16,
-          paddingTop: 20,
-          paddingBottom: 100,
+          paddingVertical: 20
         }}
         alwaysBounceVertical={true}
         showsVerticalScrollIndicator={false}
@@ -82,7 +71,7 @@ const HomePage = () => {
       >
         {/* Top Bar */}
         <View className="flex flex-row justify-between items-center w-full h-12 mb-2">
-          <Text className="text-[20px] font-rubik-bold font-extrabold text-black">
+          <Text className="text-[20px] font-nunito-bold font-bold  text-black">
             Hi {userData?.name || "namanya gakebaca"} 👋
           </Text>
           <NotificationButton />
