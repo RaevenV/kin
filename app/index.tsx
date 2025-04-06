@@ -17,7 +17,6 @@ const LoginPage = () => {
   const {signInWithEmail, loading, userData, session} = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [initialCheckDone, setInitialCheckDone] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -26,9 +25,8 @@ const LoginPage = () => {
         console.log("User already logged in, redirecting to home...");
         router.replace("/(tabs)/home");
       }
-      setInitialCheckDone(true);
     }
-  }, [loading, session, userData, router]);
+  }, [session, userData, router]);
 
   const handleSignIn = async () => {
     if (!email || !password) {

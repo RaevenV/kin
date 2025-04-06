@@ -3,7 +3,7 @@ import React from "react";
 import { Image } from "expo-image";
 import { useAuth } from "@/hooks/useAuthContext";
 import { useRouter } from "expo-router";
-import { Ionicons} from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import * as Progress from "react-native-progress";
 
 interface TabIconProps {
@@ -22,6 +22,14 @@ const ProfilePage = () => {
     } catch (error) {
       console.error("Sign out failed:", error);
     }
+  };
+
+  const navigateToJoinFamilyGroup = () => {
+    router.push("familyGroup/joinFamilyGroup");
+  };
+
+  const navigateToCreateFamilyGroup = () => {
+    router.push("familyGroup/createFamilyGroup");
   };
 
   const TabIcon = ({ icon, focused }: TabIconProps) => {
@@ -68,14 +76,6 @@ const ProfilePage = () => {
 
       {/* userdata section */}
       <View className="z-20 w-full px-8 h-40 mt-[-90px] mb-4">
-        {/* <Pressable
-          onPress={handleSignOut}
-          className="w-full bg-red-500 p-4 rounded-xl h-14 flex justify-center items-center"
-        >
-          <Text className="text-white font-nunito-bold font-bold">
-            Sign Out
-          </Text>
-        </Pressable> */}
         <View className="h-full w-full rounded-3xl p-8 justify-start items-center gap-y-4 bg-white shadow-sm">
           <Progress.Bar color="#77AAFF" progress={0.3} width={240} />
         </View>
@@ -89,6 +89,35 @@ const ProfilePage = () => {
           <View className="bg-white w-[48%] h-40 rounded-xl shadow-sm"></View>
           <View className="bg-white w-[48%] h-40 rounded-xl shadow-sm"></View>
         </View>
+      </View>
+
+      <View className="mt-8 w-full px-8 flex flex-col justify-center items-center gap-y-4">
+        <Pressable
+          onPress={handleSignOut}
+          className="w-full bg-red-500 p-4 rounded-xl h-14 flex justify-center items-center"
+        >
+          <Text className="text-white font-nunito-bold font-bold">
+            Sign Out
+          </Text>
+        </Pressable>
+
+        <Pressable
+          onPress={navigateToJoinFamilyGroup}
+          className="rounded-3xl bg-white shadow-sm w-full h-40 flex justify-center items-center"
+        >
+          <Text className="font-nunito-bold font-bold text-[16px]">
+            Join an existing family group
+          </Text>
+        </Pressable>
+
+        <Pressable
+          onPress={navigateToCreateFamilyGroup}
+          className="rounded-3xl bg-white shadow-sm w-full h-40 flex justify-center items-center"
+        >
+          <Text className="font-nunito-bold font-bold text-[16px]">
+            Create a family group
+          </Text>
+        </Pressable>
       </View>
     </ScrollView>
   );

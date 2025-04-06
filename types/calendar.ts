@@ -5,7 +5,7 @@ export type Event = {
   description: string | null;
   start_time: string; // ISO timestamp
   end_time: string; // ISO timestamp
-  created_by: number;
+  created_by: number; //user id
   event_type: string;
   created_at: string; // ISO timestamp
   updated_at: string | null; // ISO timestamp
